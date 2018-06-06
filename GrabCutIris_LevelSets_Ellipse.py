@@ -496,9 +496,7 @@ while tempi < 10:
 mask2 = np.where((mask==1) + (mask==3),255,0).astype('uint8')
 output = cv2.bitwise_and(img2,img2,mask=mask2)
 
-filename1 = filename.split('\\')
-jstname = filename1[1].split('.')
-strng = segF + '/' + jstname[0] + '_seg.png'
+strng = os.path.join(segF, os.path.basename(filename).split('.')[0] + '_seg.png')
 cv2.imwrite(strng,output)
 
 source_image1 = cv.LoadImage(filename, cv.CV_LOAD_IMAGE_GRAYSCALE) 
@@ -547,12 +545,12 @@ fe = FitEllipse(source_image, (min_val+20))
 
 # Saving results
 
-strng1 = segF + '/' + jstname[0] + '_contour.png'
+strng1 = os.path.join(segF, os.path.basename(filename).split('.')[0] + '_contour.png')
 cv.SaveImage(strng1,source_image1)
 cimg1 = cv2.imread(strng1)
 bar = np.zeros((img.shape[0],5,3),np.uint8)
 res = np.hstack((img2,bar,eyeball_bw,bar,iris_bw,bar,img,bar,output,bar,cimg1))
-output_file = segF + '/' + jstname[0] + "_grabcut_output.png"
+output_file = os.path.join(segF, os.path.basename(filename).split('.')[0] + '_grabcut_output.png')
 cv2.imwrite(output_file,res)
 
 print 'Done segmenting!!!'
